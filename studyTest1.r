@@ -10,6 +10,12 @@ install.packages("plyr")
 install.packages("reshape2")
 #data / melt(), cast()
 
+'''
+*필수, 코드파일 실행 후 위의 package install block 설정 후, run(ctrl+enter)해주세요.
+그래도 한글이 깨질 경우,
+1. 파일 내의 library(package) - block 후에 ctrl+enter로 설치
+2. R studio - 상단 Tools - Global Options - Code - Saving - Default text encoding - Change - (UTF-8) 
+'''
 
 # =======================================================
 # 01. 다음과 같은 벡터 객체를 생성하시오.
