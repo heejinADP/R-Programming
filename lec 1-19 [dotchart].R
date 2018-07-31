@@ -7,7 +7,7 @@ plot(y~x)
 mtcars
 
 # list 요소 가져오기 / $(category) / row.names(list) / labes= (label)
-# pont size -> cex
+# font size -> cex
 plot(mtcars$mpg)
 dotchart(mtcars$mpg, labels=row.names(mtcars), cex=0.7)
 
