@@ -27,3 +27,23 @@ table(welfare$jobcode)
 list_job=read_excel("D:/R programming/Koweps_Codebook.xlsx", col_names=T, sheet=2)
 head(list_job)
 dim(list_job)
+welfare=rename(welfare, code_job=jobcode)
+welfare=left_join(welfare, list_job, id="code_job")
+
+welfare %>% 
+  filter(!is.na(code_job)) %>% select(code_job, job) %>% 
+head(10)
+
+job_income = welfare %>% filter(!is.na(job) & !is.na(salary)) %>% group_by(job) %>% 
+  summarise(mean_income=mean(salary))
+head(job_income)
+
+top10 = job_income %>% arrange(desc(mean_income)) %>% head(10)
+top10
+
+ggplot(top10, aes(x=reorder(job, mean_income), y= mean_income))+geom_col()+coord_flip()
+
+bottom10 = job_income %>% arrange(mean_income) %>% head(10)
+bottom10
+
+ggplot(bottom10, aes(reorder(job, mean_income), mean_income))+geom_col()+coord_flip()+ylim(0,850)
