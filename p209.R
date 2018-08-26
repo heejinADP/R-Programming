@@ -1,5 +1,6 @@
 # foreign 패키지
 install.packages("foreign")
+install.packages("readx1")
 
 library(foreign)
 library(dplyr)
