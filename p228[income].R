@@ -61,3 +61,83 @@ job_female
 ggplot(data=job_male, aes(x=reorder(job, n), y=n)) +
          geom_col()+coord_flip()
 ggplot(data=job_female, aes(x=reorder(job, n), y=n)) + geom_col() + coord_flip()
+
+# p244
+welfare$religion
+class(welfare$religion)
+table(welfare$religion)
+
+welfare$religion = ifelse(welfare$religion==1, "yes", "no")
+table(welfare$religion)
+
+class(welfare$marriage)
+table(welfare$marriage)
+welfare$group_marriage=ifelse(welfare$marriage==1, "marriage", ifelse(welfare$marriage==3, "divorce", NA))
+table(welfare$group_marriage)
+table(is.na(welfare$group_marriage))
+qplot(welfare$group_marriage)
+
+religion_marriage=welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  group_by(religion, group_marriage) %>% 
+  summarise(n=n()) %>% mutate(tot_group=sum(n)) %>% mutate(pct=round(n/tot_group*100,1))
+
+religion_marriage=welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  count(religion, group_marriage) %>% 
+  group_by(religion) %>% 
+  mutate(pct=round(n/sum(n)*100,2))
+
+divorce = religion_marriage %>% 
+  filter(group_marriage=="divorce") %>% 
+  select(religion, pct)
+divorce
+
+ggplot(data=divorce, aes(x=religion, y=pct))+geom_col()
+
+# p250
+ageg_marriage = welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  group_by(agegroup, group_marriage) %>% 
+  summarise(n=n()) %>% 
+  mutate(tot_group=sum(n)) %>% 
+  mutate(pct=round(n/tot_group*100, 1))
+ageg_marriage
+
+ageg_marriage = welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  count(agegroup, group_marriage) %>% 
+  group_by(agegroup) %>% 
+  mutate(pct=round(n/sum(n)*100, 1))
+ageg_marriage
+
+ageg_divorce=ageg_marriage %>% 
+  filter(agegroup!="young" & group_marriage=="divorce") %>% 
+  select(agegroup, pct)
+ageg_divorce
+
+ggplot(ageg_divorce, aes(agegroup, pct))+geom_col()
+
+welfare$group_marriage
+ageg_religion_marriage=welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  group_by(agegroup, religion, group_marriage) %>% 
+  summarise(n=n()) %>% 
+  mutate(tot_group=sum(n)) %>% 
+  mutate(pct=round(n/tot_group*100,1))
+
+ageg_religion_marriage
+welfare$religion
+
+ageg_religion_marriage=welfare %>% 
+  filter(!is.na(group_marriage)) %>% 
+  count(agegroup, religion, group_marriage) %>%
+  mutate(pct=round(n/sum(n)*100,1))
+ageg_religion_marriage
+
+df_divorce=ageg_religion_marriage %>% 
+  filter(group_marriage=="divorce") %>% 
+  select(agegroup, religion, pct)
+df_divorce
+
+ggplot(data=df_divorce, aes(agegroup, pct, fill=religion))+geom_col(position="dodge")
