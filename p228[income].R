@@ -173,3 +173,24 @@ region_ageg=welfare %>%
 
 region_ageg
 ggplot(region_ageg, aes(region, pct, fill=agegroup)) + geom_col() + coord_flip()
+
+region_ageg
+list_order_old= region_ageg %>% filter(agegroup=="old") %>% 
+  arrange(pct)
+list_order_old
+
+order = list_order_old$region
+order
+
+ggplot(region_ageg, aes(x=region, y=pct, fill=agegroup)) + geom_col() + coord_flip() +
+  scale_x_discrete(limits=order)
+
+class(region_ageg$agegroup)
+levels(region_ageg$agegroup)
+
+region_ageg$agegroup=factor(region_ageg$agegroup, level=c("old","middle","young"))
+class(region_ageg$agegroup)
+levels(region_ageg$agegroup)
+
+ggplot(region_ageg, aes(x=region, y=pct, fill=agegroup)) + geom_col() + coord_flip() +
+         scale_x_discrete(limits=order)
